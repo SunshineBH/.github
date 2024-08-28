@@ -38,7 +38,7 @@ We believe that our mission can be accomplished through our philosophy that addi
 
 ## Contributing
 
-We welcome contributions from the community! If you are interested in contributing to our projects, please follow these steps:
+Development of code at Sunshine is managed by the Data Engineering team, but we welcome anyone who is interested to learn with us! For developers, please follow these steps:
 
 1. **Fork the Repository**: Click the "Fork" button on the repository you want to contribute to.
 2. **Clone the Repository**: Clone the forked repository to your local machine using `git clone <repository-url>`.
@@ -47,11 +47,11 @@ We welcome contributions from the community! If you are interested in contributi
 5. **Push Changes**: Push your changes to your forked repository using `git push origin feature/your-feature-name`.
 6. **Create a Pull Request**: Open a pull request on the original repository and provide a detailed description of your changes.
 
-For more detailed guidelines, please refer to our [Contributing Guide](https://github.com/SunshineBehavioralHealth/Contributing.md).
+For more detailed guidelines, please refer to our [Contributing Guide](https://github.com/SunshineBehavioralHealth/Contributing.md) _(Coming Soon)_.
 
-## Code of Conduct
+## Code of Conduct - _(Coming Soon)_
 
-We are committed to creating a welcoming and inclusive environment for everyone. Please read and adhere to our [Code of Conduct](https://github.com/SunshineBehavioralHealth/Code_of_Conduct.md) when participating in our community.
+We are committed to creating a welcoming and inclusive environment for everyone. Please read and adhere to our [Code of Conduct](https://github.com/SunshineBehavioralHealth/Code_of_Conduct.md) when participating in our community. 
 
 ## Contact
 
