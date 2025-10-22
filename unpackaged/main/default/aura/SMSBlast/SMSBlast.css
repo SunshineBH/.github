@@ -1,0 +1,11 @@
+.THIS {
+}
+.THIS textarea {
+  height: 10rem;
+}
+.THIS .lightningProgressIndicator {
+    width:80%
+}
+.THIS .disabledPill.slds-pill__remove {
+    display: none !important;
+}

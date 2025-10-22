@@ -1,0 +1,128 @@
+<aura:component controller="smsBlast_Ctrl" >
+   <aura:attribute name="empID" type="string"/>
+   <aura:attribute name="progressIndicatorFlag" type="String" />
+   <aura:attribute name="textMsg" type="String" />
+   <aura:attribute name="sunshineCenter" type="String" default="" />
+   <aura:attribute name="AllRecipients" type="List" default=""/>
+   <aura:attribute name="SelectedRecipients" type="List" default=""/>
+   <aura:attribute name="SelectedRecipientsDT" type="List" default=""/>
+   <aura:attribute name="data" type="Object"/>
+   <aura:attribute name="columns" type="List"/>
+   <aura:attribute name="selectedRowsCount" type="Integer" default="0"/>
+   <aura:attribute name="maxRowSelection" type="Integer" default="5"/>
+    <aura:attribute name="readOnlyView" type="Boolean" default="false"/>
+    <aura:attribute name="SunshineCenteroptions" type="List" />
+    <aura:attribute name="selectedSunshineValue" type="String" default="Mountain Springs Recovery"/>
+    <aura:attribute name="showNPSButton" type="Boolean" default="false"/>
+   <!-- handlers-->
+   <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+   <lightning:spinner alternativeText="Loading" aura:id="loader" />
+    <div class="slds-box slds-theme_default" width="80%">
+      <div class="slds-scope">
+         <div class="slds-p-around_medium">
+           <div width="50%">
+            <lightning:progressIndicator class="slds-p-bottom_medium"  type="path" variant="base" currentStep="{!v.progressIndicatorFlag}">
+               <lightning:progressStep label="Compose Message" value="step1"/>
+               <lightning:progressStep label="Confirm/Send" value="step2"/>
+            </lightning:progressIndicator>
+               </div>
+            <div aura:id="stepOne">
+               
+               <lightning:layout>
+                  <lightning:layoutItem size="4">
+                     <div>
+                         <div class="slds-m-bottom_medium">
+                         <lightning:select name="sunshineCenter" label="Select Sunshine Center" aura:id="sunshineCenter" value="{!v.selectedSunshineValue}" onchange="{!c.loadData}">
+                          <aura:iteration items="{!v.SunshineCenteroptions}" var="item">
+                            <option text="{!item.label}" value="{!item.value}"/>
+                           </aura:iteration>
+                             
+                             </lightning:select>
+                         </div>
+                        <h1>Selected Recipietns: {!v.selectedRowsCount }</h1>
+                        <lightning:datatable
+                           columns="{! v.columns }"
+                           data="{! v.data }"
+                           keyField="OppID"
+                           sortedBy="OppName"
+                           onrowselection="{! c.addSelectedRow }"
+                           selectedRows="{! v.SelectedRecipientsDT }"
+                           />
+                     </div>
+                  </lightning:layoutItem>
+                  <lightning:layoutItem size="6" class="slds-m-left_medium slds-m-left-large slds-m-vertical_medium">
+                     <lightning:Layout multipleRows="true">
+                        <lightning:LayoutItem size="12" >
+                            <p>Recipient List</p>
+                            <div class="slds-box">
+                                <aura:if isTrue="{!v.selectedRowsCount==0}">
+                                    <div class="slds-text-color_weak">Select Recipient</div>
+                                </aura:if>
+                            <aura:iteration items="{!v.SelectedRecipients}" var="item" indexVar="index">      
+                              <lightning:pill label="{!item.OppName}" name="{!item.OppID}" href="" title="{!index}" onremove="{!c.handleRemove}">
+                                 <aura:set attribute="media">
+                                    <lightning:icon iconName="utility:phone_portrait"  alternativeText="Client Name"/>
+                                 </aura:set>
+                              </lightning:pill>
+                           </aura:iteration>
+                                </div>
+                        </lightning:LayoutItem>
+                        <lightning:LayoutItem size="12" >
+                           <lightning:textarea required="true" diabled="{!v.readOnlyView}" name="input1" value="{!v.textMsg}" label="Text Message" />
+                        </lightning:LayoutItem>
+                         <lightning:LayoutItem size="12">
+                       <div  class="slds-p-top_medium">
+                  <lightning:button aura:id="btnNext" disabled="{!or(v.selectedRowsCount==0,v.textMsg == null)}"  label="Next"  onclick="{!c.goToStepTwo}"   variant="brand"/>
+               <!-- <aura:if isTrue="{!v.showNPSButton}">
+                     <lightning:button disabled="{!v.showNPSButton}" label="Send Net Promoter Survey"  onclick="{!c.sendNetPromoterSMS}" variant="brand"/>
+
+               </aura:if> -->
+                 
+               			</div>
+                         </lightning:LayoutItem>
+                     </lightning:Layout>
+                  </lightning:layoutItem>
+               </lightning:layout>
+
+            </div>
+            <div aura:id="stepTwo">
+                <lightning:Layout multipleRows="true" class="slds-m-left_medium slds-m-left-large slds-m-vertical_medium">
+                        <lightning:LayoutItem size="8"  >
+                            <p>Recipient List</p>
+                            <div class="slds-box slds-truncate_container_75">
+                            <aura:iteration items="{!v.SelectedRecipients}" var="item" indexVar="index">      
+                              <lightning:pill class="disabledPill" label="{!item.OppName}" name="{!item.OppID}" href="" title="{!index}" onremove="{!c.handleRemove}">
+                                 <aura:set attribute="media">
+                                    <lightning:icon iconName="utility:phone_portrait"  alternativeText="Client Name"/>
+                                 </aura:set>
+                              </lightning:pill>
+                                
+                                                            </aura:iteration>
+                                </div>
+                        </lightning:LayoutItem>
+                    
+                    <lightning:pillContainer 
+                        items="{!v.SelectedRecipients}"
+
+                >
+            </lightning:pillContainer>
+
+                        <lightning:LayoutItem size="8">
+                           <lightning:textarea disabled="true" name="input1" value="{!v.textMsg}" label="Text Message" />
+                        </lightning:LayoutItem>
+                    <lightning:LayoutItem size="12">
+                    <div  class="slds-p-top_medium">
+                  <lightning:button label="Back" onclick="{!c.goBackToStepOne}" />
+
+                  <lightning:button label="Send"  onclick="{!c.sendSMS}" variant="brand"/>
+                 
+               </div>
+                    </lightning:LayoutItem>
+                     </lightning:Layout>
+               
+            </div>
+         </div>
+      </div>
+   </div>
+</aura:component>
